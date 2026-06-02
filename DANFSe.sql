@@ -54,7 +54,11 @@ Begin
 		Else 'DataBand'
 		End
 	From #temp Where bloco = @bloco
-	 
+	       <ShapeObject Name="Shape3" Left="11.34" Width="771.12" Height="97.15"/>
+      <TextObject Name="Text1" Left="11.34" Width="192.4" Height="23.81" Text="PRESTADOR / FORNECEDOR " Padding="0, 0, 0, 0" Font="Arial, 7pt, style=Bold"/>
+      <TextObject Name="Text2" Left="204.5" Width="192.4" Height="9.34" Text=" CNPJ / CPF / NIF" Padding="0, 0, 0, 0" Font="Arial, 6pt, style=Bold"/>
+      <TextObject Name="Text3" Left="204.5" Top="14.48" Width="192.4" Height="9.34" Text="22.911.618/0001-46" Padding="0, 0, 0, 0" Font="Microsoft Sans Serif, 6.75pt"/>
+
 	Select '<' + @p +' Name="'+ @p + Convert(Varchar(6), bloco) + '" Width="793.8" Height="43.85" Border.Lines="All">'
 	From #temp Where bloco = @bloco
 	Group By Bloco

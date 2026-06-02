@@ -208,5 +208,31 @@ End
 Select * From #geral
 
 Select bloco, Max([Larg#])
+	
 from #temp
 Group by bloco
+Go
+
+ALTER FUNCTION dbo.fn_PrimeiraLetraMaiuscula (@Texto VARCHAR(MAX))
+RETURNS VARCHAR(MAX)
+AS
+BEGIN
+    -- Se o texto for nulo ou vazio, retorna ele mesmo
+    IF @Texto IS NULL OR @Texto = '' RETURN @Texto;
+
+    DECLARE @Resultado VARCHAR(MAX) = '';
+
+    -- Divide o texto por espaços (O nível de compatibilidade do banco deve ser >= 130)
+    SELECT @Resultado = @Resultado + 
+        CASE 
+            -- Palavras com 3 ou menos caracteres ficam totalmente em minúsculo
+            WHEN LEN(value) <= 3 THEN LOWER(value)
+            -- Palavras maiores que 3 ganham a primeira letra maiúscula
+            ELSE UPPER(LEFT(value, 1)) + LOWER(SUBSTRING(value, 2, LEN(value)))
+        END + ' '
+    FROM STRING_SPLIT(@Texto, ' ');
+
+    -- Remove o último espaço extra gerado no loop e retorna
+    RETURN RTRIM(@Resultado);
+END;
+GO

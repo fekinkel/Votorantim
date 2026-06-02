@@ -40,9 +40,9 @@ declare
 @wid varchar(20),
 @lef varchar(20),
 @top varchar(20),
-@texto varchar(100),
-@campo varchar(100),
-@linha varchar(1000)
+@texto varchar(8000),
+@campo varchar(8000),
+@linha varchar(8000)
 
 IF OBJECT_ID('tempdb..#geral') IS NOT NULL DROP TABLE #geral
 
@@ -113,6 +113,12 @@ Begin
 
 			Select top 1 @linha = '<DataBand Name="DataBand_' + Convert(Varchar(6), bloco) + '" Width="' +@widBloco+ '" Height="'+@heiBloco+'" DataSource="dsRelatorio">'
 			From #temp Where bloco = @bloco
+			print @linha
+			print @topBase
+			print 'Bloco Hei = ' + Convert(Varchar(10),@heiBloco)
+			print 'Bloco Wid = ' + Convert(Varchar(10),@widBloco)
+			print 'Bloco = ' + Convert(Varchar(10),@bloco)
+
 			Insert into #geral
 			Select @linha, @bloco
 
@@ -136,7 +142,7 @@ Begin
 				if(@campo = '' or @campo is null)
 				Begin
 					---Criar o label
-					Select @linha = '<TextObject Name="lbl_' + Convert(varchar(10),@i) +'" Left="'+ @lef +'" Top="'+ @top +'" Width="' + @wid + '" Height="'+ @hei +'" Text="' + @texto + '" Padding="0, 0, 0, 0" Font="Arial, 7pt, style=Bold"/>'
+					Select @linha = '<TextObject Name="lbl_' + Convert(varchar(10),@i) +'" Left="'+ @lef +'" Top="'+ @top +'" Width="' + @wid + '" Height="'+ @hei +'" Text="' + @texto + '" Padding="0, 0, 0, 0" Font="Arial, 6pt, style=Bold"/>'
 					From #temp Where bloco = @bloco and Num = @i
 					Print 'Campo Vazio'
 					print 'Valor é: ' + @linha
@@ -156,7 +162,7 @@ Begin
 					Print 'Campo ' + @Campo
 					---Criar o label
 					--<TextObject Name="Text2" Left="204.5" Width="192.4" Height="9.34" Text=" CNPJ / CPF / NIF" Padding="0, 0, 0, 0" Font="Arial, 6pt, style=Bold"/>
-					Select @linha = '<TextObject Name="lbl_' + campo +'" Left="'+ @lef +'" Top="'+ @top +'" Width="' + @wid + '" Height="'+ @hei +'" Text="' + @texto + '" Padding="0, 0, 0, 0" Font="Arial, 6pt, style=Bold"/>'
+					Select @linha = '<TextObject Name="lbl_' + campo +'" Left="'+ @lef +'" Top="'+ @top +'" Width="' + @wid + '" Height="'+ @hei +'" Text="' + dbo.fn_PrimeiraLetraMaiuscula(@texto) + '" Padding="0, 0, 0, 0" Font="Arial, 6pt, style=Bold"/>'
 					From #temp Where bloco = @bloco and Num = @i
 					
 					Insert into #geral
@@ -170,7 +176,7 @@ Begin
 
 					--Criar o Text
 					--<TextObject Name="Text3" Left="204.5" Top="14.48" Width="192.4" Height="9.34" Text="22.911.618/0001-46" Padding="0, 0, 0, 0" Font="Microsoft Sans Serif, 6.75pt"/>			
-					Select @linha = '<TextObject Name="txt_' + campo +'" Left="'+ @lef +'" Top="'+ @top +'" Width="' + @wid + '" Height="'+ @hei +'" Text="[' + @texto + ']" Padding="0, 0, 0, 0" Font="Microsoft Sans Serif, 6.75pt"/>'
+					Select @linha = '<TextObject Name="txt_' + campo +'" Left="'+ @lef +'" Top="'+ @top +'" Width="' + @wid + '" Height="'+ @hei +'" Text="[' + @texto + ']" Padding="0, 0, 0, 0" Font="Microsoft Sans Serif, 7pt"/>'
 					From #temp Where bloco = @bloco and Num = @i
 					
 					Insert into #geral
